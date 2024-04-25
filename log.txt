@@ -130,3 +130,13 @@ Timestamp:Tue Apr 23 2024 15:26:23 GMT-0700 (Pacific Daylight Time)
 URL: /favicon.ico
 Timestamp:Tue Apr 23 2024 15:26:23 GMT-0700 (Pacific Daylight Time)
 
+::1 - - [25/Apr/2024:20:57:48 +0000] "GET / HTTP/1.1" 200 31 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:57:49 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:57:54 +0000] "GET /movies HTTP/1.1" 200 662 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:58:09 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:59:42 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:59:42 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:59:43 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:59:44 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:20:59:50 +0000] "GET /documentation.html HTTP/1.1" 404 157 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [25/Apr/2024:21:00:25 +0000] "GET /documentation HTTP/1.1" 404 251 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
