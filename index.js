@@ -5,7 +5,7 @@ morgan = require('morgan'),
 
 const app = express();
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
 
 const favoriteMovies = [
   {
@@ -61,18 +61,20 @@ const favoriteMovies = [
 ]
 
 app.use(morgan('combined', { stream: accessLogStream }));
+app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
   res.send('Welcome to my cartoon database!')
 });
 
-app.get('/documentation', (req, res) => {
-  res.sendFile('public/documetation.html', { root: __dirname })
-})
-
 app.get('/movies', (req, res) => {
   res.json(favoriteMovies);
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(8080, () => {
