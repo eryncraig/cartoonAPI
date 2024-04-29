@@ -7,8 +7,95 @@
 </head>
 
 <body>
-  <h3>What this Database is For</h3>
-  <p>Currently, serving a request back to the user via the server and business logic</p>
+  <h3>About</h3>
+  <p>This project is a RESTful API serving a request back to the user via the server and business logic. The main
+    purpose of the API is to support a database for animated films, once connected to a client and server. This API
+    contains the necessary logic to ensure the data is transferred. Right now the data is hardcoded for testing
+    purposes.</p>
+
+
+  <h4>Endpoints</h4>
+  <table>
+    <tr>
+      <th>Request</th>
+      <th>URL</th>
+      <th>HTTP Method</th>
+      <th>Request Body Data Format</th>
+      <th>Response Body Data Format</th>
+    </tr>
+    <tr>
+      <td>Return a list of ALL movies to the user</td>
+      <td>/movies</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Return data (description, genre, director, image URL, whether it's featured or not) about a single movie by
+        title to the user;</td>
+      <td>/movies/:title</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Return data about a genre (description) by name/title (e.g., “Thriller”)
+      </td>
+      <td>movies/:genre</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Return data about a director (bio, birth year, death year) by name
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Allow new users to register
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Allow users to update their user info (username)
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more
+        on this later)</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been
+        removed —- more on this later)</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this
+        later).
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 </body>
 
 </html>

@@ -7,55 +7,86 @@ const app = express();
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
 
+//Note: birthdates are in YYYY-MM-DD format
 const favoriteMovies = [
   {
     'Title': 'Nausicaa',
-    'Director': 'Hayao Miyazaki',
+    'Director': {
+      'name': 'Hayao Miyazaki',
+      'birthdate': '1910-03-23'
+    },
     'Year': 1984
   },
   {
-    'Title': 'Only Yesterdat',
-    'Director': 'Isao Takahata',
+    'Title': 'Only Yesterday',
+    'Director': {
+      'name': 'Isao Takahata',
+      'birthdate': '1935-10-29'
+    },
     'Year': 1996
   },
   {
     'Title': 'Akira',
-    'Director': 'Katsuhiro Otomo',
+    'Director': {
+      'name': 'Katsuhiro Otomo',
+      'birthdate': '1954-04-14'
+    },
     'Year': 1988
   },
   {
     'Title': 'Tekkonkinkreet',
-    'Director': 'Hiroaki Ando',
+    'Director': {
+      'name': 'Hiroaki Ando',
+      'birthdate': '1966'
+    },
     'Year': 2006
   },
   {
     'Title': 'The Thief and The Cobbler',
-    'Director': 'Richard Williams',
+    'Director': {
+      'name': 'Richard Williams',
+      'birthdate': '1933-03-13'
+    },
     'Year': 1993
   },
   {
     'Title': 'Paprika',
-    'Director': 'Satoshi Kon',
+    'Director': {
+      'name': 'Satoshi Kon',
+      'birthdate': '1963-10-12'
+    },
     'Year': 2006
   },
   {
     'Title': 'Atlantis: The Lost Empire',
-    'Director': 'Gary Trousdale',
+    'Director': {
+      'name': 'Gary Trousdale',
+      'birthdate': '1960-06-08'
+    },
     'Year': 2001
   },
   {
     'Title': 'Ghost in the Shell',
-    'Director': 'Mamoru Oshii',
+    'Director': {
+      'name': 'Mamoru Oshii',
+      'birthdate': '1951-08-08'
+    },
     'Year': 1995
   },
   {
     'Title': 'Prince of Egypt',
-    'Director': 'Brenda Chapman',
+    'Director': {
+      'name': 'Brenda Chapman',
+      'birthdate': '1962-11-01'
+    },
     'Year': 1998
   },
   {
     'Title': 'Wizards',
-    'Director': 'Ralph Bakshi',
+    'Director': {
+      'name': 'Ralph Bakshi',
+      'birthdate': '1938-10-29'
+    },
     'Year': 1977
   },
 ]
