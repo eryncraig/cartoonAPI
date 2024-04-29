@@ -26,63 +26,70 @@
     <tr>
       <td>Return a list of ALL movies to the user</td>
       <td>/movies</td>
-      <td></td>
-      <td></td>
+      <td>GET</td>
+      <td>none</td>
       <td></td>
     </tr>
     <tr>
       <td>Return data (description, genre, director, image URL, whether it's featured or not) about a single movie by
         title to the user;</td>
       <td>/movies/:title</td>
-      <td></td>
-      <td></td>
+      <td>GET</td>
+      <td>none</td>
       <td></td>
     </tr>
     <tr>
       <td>Return data about a genre (description) by name/title (e.g., “Thriller”)
       </td>
-      <td>movies/:genre</td>
-      <td></td>
-      <td></td>
+      <td>/movies/:genre</td>
+      <td>GET</td>
+      <td>none</td>
       <td></td>
     </tr>
     <tr>
       <td>Return data about a director (bio, birth year, death year) by name
       </td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>/movies/:director/:name</td>
+      <td>GET</td>
+      <td>none</td>
       <td></td>
     </tr>
     <tr>
       <td>Allow new users to register
       </td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>/users</td>
+      <td>PUT</td>
+      <td>JSON formatted user info:
+        {
+        'user':'username',
+        'photo': 'photurl'
+        'birthdate': 'YYYY-MM-DD',
+        'favorites': {}
+        }
+      </td>
       <td></td>
     </tr>
     <tr>
       <td>Allow users to update their user info (username)
       </td>
-      <td></td>
-      <td></td>
+      <td>/users/user</td>
+      <td>PATCH</td>
       <td></td>
       <td></td>
     </tr>
     <tr>
       <td> Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more
         on this later)</td>
-      <td></td>
-      <td></td>
+      <td>/users/favorites/:title</td>
+      <td>PATCH</td>
       <td></td>
       <td></td>
     </tr>
     <tr>
       <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been
         removed —- more on this later)</td>
-      <td></td>
-      <td></td>
+      <td>/users/favorites/:title</td>
+      <td>DELETE</td>
       <td></td>
       <td></td>
     </tr>
@@ -90,8 +97,8 @@
       <td>Allow existing users to deregister (showing only a text that a user email has been removed—more on this
         later).
       </td>
-      <td></td>
-      <td></td>
+      <td>/users/:id</td>
+      <td>DELETE</td>
       <td></td>
       <td></td>
     </tr>
