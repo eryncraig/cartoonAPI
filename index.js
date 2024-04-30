@@ -9,7 +9,7 @@ const app = express();
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
 
-const users = [
+let users = [
   {
     'id': 1,
     'name': 'John Michael',
@@ -41,6 +41,16 @@ const movies = [
     'director': {
       'name': 'Hayao Miyazaki',
       'birthdate': '1910-03-23'
+    },
+    'actors': {
+      'star': {
+        'name': 'Sumi Shimamoto',
+        'birthdate': '1954-12-08'
+      },
+      'support': {
+        'name': 'Mahito Tsujimura',
+        'birthdate': '1930-04-14'
+      }
     },
     'year': 1984,
     'genre': {
@@ -214,12 +224,41 @@ app.put('/users/:id/:movieTitle', (req, res) => {
 
   if (user) {
     user.favorites.push(movieTitle);
-    res.status(200).json(user.favorites);
+    res.status(200).send(`${movieTitle} has been added to user ${id}'s favorites.`);
   } else {
     res.status(400).send('Sorry! We\'re unable to update your favorites.')
   };
 });
 
+
+//endpoint to remove a movie from a users list of favorites 
+app.delete('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find(user => user.id === Number(id));
+
+  if (user) {
+    user.favorites = user.favorites.filter(title => title !== movieTitle);
+    res.status(200).send(`${movieTitle} has been removed from user ${id}'s favorites.`);
+  } else {
+    res.status(400).send('Sorry! We\'re unable to update your favorites.')
+  };
+});
+
+
+//endpoint to remove a user and their email from the datatbase
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  let user = users.find(user => user.id === Number(id));
+
+  if (user) {
+    users = users.filter(user => user.id !== Number(id));
+    res.status(200).send(`User ${id} has been removed.`);
+  } else {
+    res.status(400).send('Sorry! We\'re unable to update your account.')
+  };
+});
 
 
 //endpoint to retrieve a list of all movies
@@ -242,6 +281,7 @@ app.get('/movies/:title', (req, res) => {
   }
 });
 
+
 //endpoint to retrieve information about a genre
 app.get('/movies/genre/:genreName', (req, res) => {
   const { genreName } = req.params;
@@ -255,6 +295,7 @@ app.get('/movies/genre/:genreName', (req, res) => {
     res.status(400).send('Sorry, no genre found with that name.')
   }
 });
+
 
 //endpoint to retrieve information about a director
 app.get('/movies/director/:directorName', (req, res) => {
@@ -273,6 +314,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
+
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
