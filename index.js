@@ -1,8 +1,9 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 morgan = require('morgan'),
   fs = require('fs'),
-  path = require('path');
+  path = require('path'),
+  bodyParser = require('body-parser'),
+  uuid = require('uuid')
 
 const app = express();
 
@@ -11,18 +12,21 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { 
 const users = [
   {
     'id': 1,
+    'name': 'John Michael',
     'username': 'Johnny94',
     'birthdate': '1994-04-05',
     'favorites': []
   },
   {
     'id': 2,
+    'name': 'Sala Ahmed',
     'username': 'FireKing11',
     'birthdate': '1976-09-23',
     'favorites': []
   },
   {
     'id': 3,
+    'name': 'Jody Winters',
     'username': 'Chevalier86',
     'birthdate': '1986-11-18',
     'favorites': []
@@ -167,15 +171,62 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-//endpoint fo rthe homepage of the site
+//endpoint for the homepage of the site
 app.get('/', (req, res) => {
   res.send('Welcome to my cartoon database!')
 });
+
+//endpoint to add a new user (request must be sent in the body)
+app.post('/users', (req, res) => {
+  const newUser = req.body;
+
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).send('User is missing a name.')
+  }
+});
+
+
+//endpoint to update a users' username (themselves)
+app.put('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const updatedUser = req.body;
+
+  let user = users.find(user => user.id === Number(id));
+
+  if (user) {
+    user.username = updatedUser.username;
+    res.status(200).json(user);
+  } else {
+    res.status(400).send('Unable to update that user.')
+  };
+});
+
+
+//endpoint to add a movie to a users list of favorites (I'm using update as opposed to create (CRUD))
+app.put('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find(user => user.id === Number(id));
+
+  if (user) {
+    user.favorites.push(movieTitle);
+    res.status(200).json(user.favorites);
+  } else {
+    res.status(400).send('Sorry! We\'re unable to update your favorites.')
+  };
+});
+
+
 
 //endpoint to retrieve a list of all movies
 app.get('/movies', (req, res) => {
   res.status(200).json(movies);
 });
+
 
 //endpoint to retrieve a movie by title
 app.get('/movies/:title', (req, res) => {
@@ -217,10 +268,6 @@ app.get('/movies/director/:directorName', (req, res) => {
   }
 });
 
-//endpoint to retrieve a list of all users
-app.get('/users', (req, res) => {
-  res.json(users);
-})
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
