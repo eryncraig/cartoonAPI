@@ -102,7 +102,9 @@ const movies = [
     "summary": "A lonely princess and a poor cobbler fall in love while trying to retrieve three magical orbs that were stolen by a bumbling thief, all while outwitting a powerful sorcerer as adventure and comedic pop culture references abound.",
     "director": {
       "name": "Richard Williams",
-      "birthdate": "1933-03-13"
+      "bio": "Richard Edmund Williams was a Canadian-British animator, voice actor, and painter. ",
+      "birthdate": "1933-03-13",
+      "death": "2019-16-08"
     },
     "year": 1993,
     "genre": {
@@ -115,7 +117,9 @@ const movies = [
     "summary": "When a machine that allows therapists to enter their patients\' dreams is stolen, all hell breaks loose. Only a young female therapist, Paprika, can stop it.",
     "director": {
       "name": "Satoshi Kon",
-      "birthdate": "1963-10-12"
+      "bio": "Satoshi Kon was a Japanese film director, animator, screenwriter and manga artist from Sapporo, Hokkaido, and a member of the Japanese Animation Creators Association.",
+      "birthdate": "1963-10-12",
+      "death": "2010-08-24"
     },
     "year": 2006,
     "genre": {
@@ -172,7 +176,7 @@ const movies = [
     "year": 1977,
     "genre": {
       "name": "Fantasy",
-      "definition": "Fantasy films are a type of speculative fiction that feature imaginative themes such as magic, mythology, supernatural events, folklore, or exotic fantasy worlds. They often include elements of wonder, escapism, and the extraordinary. Fantasy films can represent hopes and desires for better or alternative worlds, and have contributed significantly to the development of cinema."
+      "definition": "Fantasy films are a type of speculastive fiction that feature imaginative themes such as magic, mythology, supernatural events, folklore, or exotic fantasy worlds. They often include elements of wonder, escapism, and the extraordinary. Fantasy films can represent hopes and desires for better or alternative worlds, and have contributed significantly to the development of cinema."
     }
   },
 ]
