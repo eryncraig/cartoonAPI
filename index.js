@@ -11,24 +11,24 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { 
 
 let users = [
   {
-    "id": 1,
     "name": "John Michael",
     "username": "Johnny94",
-    "birthdate": "1994-04-05",
+    "email": "johnm@somemail.com",
+    "birthdate": new Date("1994-04-05"),
     "favorites": []
   },
   {
-    "id": 2,
     "name": "Sala Ahmed",
     "username": "FireKing11",
-    "birthdate": "1976-09-23",
+    "email": "fireking@somemail.com",
+    "birthdate": new Date("1976-09-23"),
     "favorites": []
   },
   {
-    "id": 3,
     "name": "Jody Winters",
     "username": "Chevalier86",
-    "birthdate": "1986-11-18",
+    "email": "jwknight@somemail.com",
+    "birthdate": new Date("1986-11-18"),
     "favorites": []
   }
 ]
@@ -41,16 +41,6 @@ const movies = [
     "director": {
       "name": "Hayao Miyazaki",
       "birthdate": "1910-03-23"
-    },
-    "actors": {
-      "star": {
-        "name": "Sumi Shimamoto",
-        "birthdate": "1954-12-08"
-      },
-      "support": {
-        "name": "Mahito Tsujimura",
-        "birthdate": "1930-04-14"
-      }
     },
     "year": 1984,
     "genre": {
@@ -114,7 +104,7 @@ const movies = [
   },
   {
     "title": "Paprika",
-    "summary": "When a machine that allows therapists to enter their patients\' dreams is stolen, all hell breaks loose. Only a young female therapist, Paprika, can stop it.",
+    "summary": "When a machine that allows therapists to enter their patients' dreams is stolen, all hell breaks loose. Only a young female therapist, Paprika, can stop it.",
     "director": {
       "name": "Satoshi Kon",
       "bio": "Satoshi Kon was a Japanese film director, animator, screenwriter and manga artist from Sapporo, Hokkaido, and a member of the Japanese Animation Creators Association.",
@@ -124,8 +114,10 @@ const movies = [
     "year": 2006,
     "genre": {
       "name": "Scifi",
-      "definition": "Science fiction (sci-fi) is a genre of fiction that incorporates real or imagined science and technology into its plot, setting, or theme. It\'s often futuristic and speculative, and sometimes called \"speculative fiction\". Science fiction stories envision alternative worlds with consistent rules and structures, set apart from the ordinary world of our time and place."
-    }
+      "definition": "Science fiction (sci-fi) is a genre of fiction that incorporates real or imagined science and technology into its plot, setting, or theme. It's often futuristic and speculative, and sometimes called \"speculative fiction\". Science fiction stories envision alternative worlds with consistent rules and structures, set apart from the ordinary world of our time and place."
+    },
+    "imagePath": "public/paprikaposter.jpeg",
+    "featured": true
   },
   {
     "title": "Atlantis: The Lost Empire",
