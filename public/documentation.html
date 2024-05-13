@@ -28,23 +28,57 @@
       <td>/movies</td>
       <td>GET</td>
       <td>none</td>
-      <td></td>
+      <td>Lists all movies in the format: `{
+        Title: String,
+        Summary: String,
+        Genre: {
+        Name: String,
+        Description: String
+        },
+        Director: {
+        Name: String,
+        Bio: String
+        },
+        Actors: [String],
+        ImagePath: String,
+        Featured: Boolean
+        }`
+      </td>
     </tr>
     <tr>
       <td>Return data (description, genre, director, image URL, whether it's featured or not) about a single movie by
         title to the user;</td>
       <td>/movies/:title</td>
       <td>GET</td>
-      <td>none</td>
-      <td></td>
+      <td>none, request is in the endpoint</td>
+      <td>Lists requested movie in same format, `{
+        Title: String,
+        Summary: String,
+        Genre: {
+        Name: String,
+        Description: String
+        },
+        Director: {
+        Name: String,
+        Bio: String
+        },
+        Actors: [String],
+        ImagePath: String,
+        Featured: Boolean
+        }`</td>
     </tr>
     <tr>
       <td>Return data about a genre (description) by name/title (e.g., “Thriller”)
       </td>
       <td>/movies/:genre</td>
       <td>GET</td>
-      <td>none</td>
-      <td></td>
+      <td>none, request is in the endpoint</td>
+      <td>Lists genre that matches url in the format:
+        `Genre: {
+        Name: String,
+        Description: String
+        }`
+      </td>
     </tr>
     <tr>
       <td>Return data about a director (bio, birth year, death year) by name
@@ -52,7 +86,12 @@
       <td>/movies/:director/:name</td>
       <td>GET</td>
       <td>none</td>
-      <td></td>
+      <td>Lists a single director that matches in the format:
+        `Director: {
+        Name: String,
+        Bio: String
+        }`
+      </td>
     </tr>
     <tr>
       <td>Allow new users to register
@@ -67,7 +106,15 @@
         'favorites': {}
         }
       </td>
-      <td></td>
+      <td>Returns new user with uuid:
+        {
+        '_id':'unique id'
+        'user':'username',
+        'photo': 'photurl'
+        'birthdate': 'YYYY-MM-DD',
+        'favorites': {}
+        }
+      </td>
     </tr>
     <tr>
       <td>Allow users to update their user info (username)
