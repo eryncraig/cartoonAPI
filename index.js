@@ -264,23 +264,6 @@ app.put("/users/:username", async (req, res) => {
 });
 
 
-
-//endpoint to UPDATE a users' username (themselves) (old)
-app.put("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
-
-  let user = users.find(user => user.id === Number(id));
-
-  if (user) {
-    user.username = updatedUser.username;
-    res.status(200).json(user);
-  } else {
-    res.status(400).send("Unable to update that user.")
-  };
-});
-
-
 //endpoint to add a movie to a users list of favorites (I"m using update/put as opposed to create/post (CRUD))
 app.put("/users/:username/movies/:movieID", async (req, res) => {
   await Users.findOneAndUpdate({ username: req.params.username },
@@ -326,51 +309,50 @@ app.delete("/users/:username", async (req, res) => {
 
 
 //endpoint to retrieve a list of all movies
-app.get("/movies", (req, res) => {
-  res.status(200).json(movies);
+app.get("/movies", async (req, res) => {
+  await Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
 //endpoint to retrieve a movie by title
-app.get("/movies/:title", (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find(movie =>
-    movie.title === title
-  );
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send("Sorry, no movie found with that title.")
-  }
+app.get("/movies/:title", async (req, res) => {
+  await Movies.findOne({ title: req.params.title })
+    .then((movie) => {
+      res.json(movie);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
-//endpoint to retrieve information about a genre
-app.get("/movies/genre/:genreName", (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find(movie =>
-    movie.genre.name === genreName
-  ).genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send("Sorry, no genre found with that name.")
-  }
+//endpoint to retrieve information about a genre 
+app.get("/movies/genre/:genreName", async (req, res) => {
+  await Movies.findOne({ 'genre.name': req.params.genreName }, { 'genre': 1, '_id': 0 })
+    .then((genre) => {
+      res.json(genre);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
 //endpoint to retrieve information about a director
-app.get("/movies/director/:directorName", (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find(movie => movie.director.name === directorName).director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send("Sorry, no director found with that name.")
-  }
+app.get("/movies/director/:directorName", async (req, res) => {
+  await Movies.findOne({ 'director.name': req.params.directorName }, { 'director': 1, '_id': 0 })
+    .then((director) => {
+      res.json(director);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
