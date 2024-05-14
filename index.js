@@ -194,23 +194,23 @@ app.get("/", (req, res) => {
   res.send("Welcome to my cartoon database!")
 });
 
-//endpoint to add a new user (request must be sent in the body); update 5/13/24, now using recommended promise syntax per Mongoose and MongoDB recommendation. Also connecting to officially created db now. However still using MongoDB 5.0 as anything above/newer requires an Atlas cluster.
+//endpoint to ADD a new user (request must be sent in the body); update 5/13/24, now using recommended promise syntax per Mongoose and MongoDB recommendation. Also connecting to officially created db now. However still using MongoDB 5.0 as anything above/newer requires an Atlas cluster as opposed to a local host.
 app.post("/users", async (req, res) => {
-  await Users.findOne({ Username: req.body.Username }).then((user) => {
+  await Users.findOne({ Username: req.body.username }).then((user) => {
     if (user) {
-      return res.status(400).send(req.body.Username + ' already exists.');
+      return res.status(400).send(req.body.username + ' already exists.');
     } else {
       Users
         .create({
-          Username: req.body.Username,
-          Name: req.body.Name,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthdate: req.body.Birthdate
+          username: req.body.username,
+          name: req.body.name,
+          password: req.body.password,
+          email: req.body.email,
+          birthdate: req.body.birthdate
         }).then((user) => { res.status(201).json(user) })
         .catch((error) => {
           console.error(error);
-          res.status(500).send('Error:' + error);
+          res.status(500).send('Error: ' + error);
         })
     }
   }).catch((error) => {
@@ -219,8 +219,53 @@ app.post("/users", async (req, res) => {
   });
 });
 
+//temporary logic to GET a list of all users using Mongoose schema
+app.get('/users', async (req, res) => {
+  await Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
-//endpoint to update a users" username (themselves)
+
+//GET a user by username
+app.get('/users/:username', async (req, res) => {
+  await Users.findOne({ username: req.params.username })
+    .then((user) => {
+      res.json(user);
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+
+//Logic to UPDATE user data via username 
+app.put("/users/:username", async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.body.username },
+    {
+      $set: {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        birthdate: req.body.birthdate
+      }
+    },
+    { new: true }
+  ).then((updatedUser) => {
+    res.json(updatedUser);
+  }).catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  })
+});
+
+
+
+//endpoint to UPDATE a users' username (themselves) (old)
 app.put("/users/:id", (req, res) => {
   const { id } = req.params;
   const updatedUser = req.body;
@@ -236,48 +281,47 @@ app.put("/users/:id", (req, res) => {
 });
 
 
-//endpoint to add a movie to a users list of favorites (I"m using update as opposed to create (CRUD))
-app.put("/users/:id/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find(user => user.id === Number(id));
-
-  if (user) {
-    user.favorites.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}"s favorites.`);
-  } else {
-    res.status(400).send("Sorry! We're unable to update your favorites.")
-  };
+//endpoint to add a movie to a users list of favorites (I"m using update/put as opposed to create/post (CRUD))
+app.put("/users/:username/movies/:movieID", async (req, res) => {
+  await Users.findOneAndUpdate({ username: req.params.username },
+    { $addToSet: { favorites: req.params.movieID } },
+    { new: true }
+  ).then((updatedUser) => {
+    res.json(updatedUser);
+  }).catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 
 //endpoint to remove a movie from a users list of favorites 
-app.delete("/users/:id/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find(user => user.id === Number(id));
-
-  if (user) {
-    user.favorites = user.favorites.filter(title => title !== movieTitle);
-    res.status(200).send(`${movieTitle} has been removed from user ${id}"s favorites.`);
-  } else {
-    res.status(400).send("Sorry! We\'re unable to update your favorites.")
-  };
+app.delete("/users/:username/movies/:movieID", async (req, res) => {
+  await Users.findOneAndUpdate({ username: req.params.username },
+    { $pull: { favorites: req.params.movieID } },
+    { new: true }
+  ).then((updatedUser) => {
+    res.json(updatedUser);
+  }).catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 
-//endpoint to remove a user and their email from the datatbase
-app.delete("/users/:id", (req, res) => {
-  const { id } = req.params;
-
-  let user = users.find(user => user.id === Number(id));
-
-  if (user) {
-    users = users.filter(user => user.id !== Number(id));
-    res.status(200).send(`User ${id} has been removed.`);
-  } else {
-    res.status(400).send("Sorry! We\'re unable to update your account.")
-  };
+//endpoint to DELETE a user and all of their data from the database by username
+app.delete("/users/:username", async (req, res) => {
+  await Users.findOneAndDelete({ username: req.params.username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.username + ' was not found.');
+      } else {
+        res.status(200).send(req.params.username + ' was deleted.');
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
