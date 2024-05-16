@@ -22,6 +22,10 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport.js')
+
 
 
 // let users = [
@@ -244,8 +248,12 @@ app.get('/users/:username', async (req, res) => {
 
 
 //Logic to UPDATE user data via username 
-app.put("/users/:username", async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.body.username },
+app.put("/users/:username", passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.user.username !== req.params.username) {
+    return res.status(400).send('Permission denied');
+  }
+
+  await Users.findOneAndUpdate({ username: req.params.username },
     {
       $set: {
         username: req.body.username,
@@ -264,8 +272,12 @@ app.put("/users/:username", async (req, res) => {
 });
 
 
-//endpoint to add a movie to a users list of favorites (I"m using update/put as opposed to create/post (CRUD))
-app.put("/users/:username/movies/:movieID", async (req, res) => {
+//endpoint to add a movie to a users list of favorites (I"m using update/put as opposed to create/post (CRUD)); authentication implemented
+app.put("/users/:username/movies/:movieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.user.username !== req.params.username) {
+    return res.status(400).send('Permission denied');
+  }
+
   await Users.findOneAndUpdate({ username: req.params.username },
     { $addToSet: { favorites: req.params.movieID } },
     { new: true }
@@ -279,7 +291,11 @@ app.put("/users/:username/movies/:movieID", async (req, res) => {
 
 
 //endpoint to remove a movie from a users list of favorites 
-app.delete("/users/:username/movies/:movieID", async (req, res) => {
+app.delete("/users/:username/movies/:movieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.user.username !== req.params.username) {
+    res.status(400).send('Permission denied.');
+  }
+
   await Users.findOneAndUpdate({ username: req.params.username },
     { $pull: { favorites: req.params.movieID } },
     { new: true }
@@ -293,7 +309,11 @@ app.delete("/users/:username/movies/:movieID", async (req, res) => {
 
 
 //endpoint to DELETE a user and all of their data from the database by username
-app.delete("/users/:username", async (req, res) => {
+app.delete("/users/:username", passport.authenticate('jwt', { session: false }), async (req, res) => {
+  if (req.user.username !== req.params.username) {
+    res.status(400).send('Permission denied.')
+  }
+
   await Users.findOneAndDelete({ username: req.params.username })
     .then((user) => {
       if (!user) {
@@ -309,7 +329,7 @@ app.delete("/users/:username", async (req, res) => {
 
 
 //endpoint to retrieve a list of all movies
-app.get("/movies", async (req, res) => {
+app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
