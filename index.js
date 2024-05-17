@@ -15,6 +15,25 @@ mongoose.connect('mongodb://localhost:27017/cartoonDB', { useNewUrlParser: true,
 
 const app = express();
 
+const cors = require('cors');
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
+
+let auth = require('./auth')(app);
+
+const { check, validationResult } = require('express-validator');
+
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { flags: "a" });
 
 app.use(morgan("combined", { stream: accessLogStream }));
@@ -22,8 +41,9 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let auth = require('./auth')(app);
+
 const passport = require('passport');
+const { hash } = require("crypto");
 require('./passport.js')
 
 
@@ -199,7 +219,20 @@ app.get("/", (req, res) => {
 });
 
 //endpoint to ADD a new user (request must be sent in the body); update 5/13/24, now using recommended promise syntax per Mongoose and MongoDB recommendation. Also connecting to officially created db now. However still using MongoDB 5.0 as anything above/newer requires an Atlas cluster as opposed to a local host.
-app.post("/users", async (req, res) => {
+app.post("/users", [
+  check('username', 'Username is required and must be over 5 characters.').isLength({ min: 5 }),
+  check('username', 'Username contains non alphanumeric characters, which is not allowed.').isAlphanumeric(),
+  check('password', 'Password is required.').not().isEmpty(),
+  check('email', 'Email does not appear to be valid.').isEmail()
+], async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.password);
+
   await Users.findOne({ Username: req.body.username }).then((user) => {
     if (user) {
       return res.status(400).send(req.body.username + ' already exists.');
@@ -208,7 +241,7 @@ app.post("/users", async (req, res) => {
         .create({
           username: req.body.username,
           name: req.body.name,
-          password: req.body.password,
+          password: hashedPassword,
           email: req.body.email,
           birthdate: req.body.birthdate
         }).then((user) => { res.status(201).json(user) })
@@ -248,7 +281,16 @@ app.get('/users/:username', async (req, res) => {
 
 
 //Logic to UPDATE user data via username 
-app.put("/users/:username", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put("/users/:username", [
+  check('username', 'Username must be at least 5 characters long.').isLength({ min: 5 }),
+  check('username', 'Username contains non alphanumeric characters, which is not allowed.').isAlphanumeric(),
+  check('email', 'Email must be in a valid format.').isEmail()
+], passport.authenticate('jwt', { session: false }), async (req, res) => {
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   if (req.user.username !== req.params.username) {
     return res.status(400).send('Permission denied');
   }
@@ -381,7 +423,8 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
+const port = process.env.PORT || 8080;
 
-app.listen(8080, () => {
-  console.log("Your app is listening on port 8080.");
+app.listen(port, '0.0.0.0', () => {
+  console.log("Listening on Port " + port);
 });
