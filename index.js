@@ -33,8 +33,6 @@ app.use(cors({
   }
 }));
 
-let auth = require('./auth')(app);
-
 const { check, validationResult } = require('express-validator');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { flags: "a" });
@@ -44,10 +42,11 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let auth = require('./auth')(app);
 
 const passport = require('passport');
 const { hash } = require("crypto");
-require('./passport.js')
+require('./passport')
 
 
 //endpoint for the homepage of the site
@@ -70,7 +69,7 @@ app.post("/users", [
 
   let hashedPassword = Users.hashPassword(req.body.password);
 
-  await Users.findOne({ Username: req.body.username }).then((user) => {
+  await Users.findOne({ username: req.body.username }).then((user) => {
     if (user) {
       return res.status(400).send(req.body.username + ' already exists.');
     } else {
