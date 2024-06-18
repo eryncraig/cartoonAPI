@@ -9,7 +9,7 @@ let movieSchema = mongoose.Schema({
     bio: String,
     birth: Date
   },
-  year: Date,
+  year: Number,
   genre: {
     name: String,
     description: String
