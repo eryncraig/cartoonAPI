@@ -135,6 +135,7 @@ app.patch("/users/:username", [
     {
       $set: {
         username: req.body.username,
+        name: req.body.name,
         password: req.body.password,
         email: req.body.email,
         birthdate: req.body.birthdate
