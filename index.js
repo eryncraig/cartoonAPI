@@ -117,7 +117,7 @@ app.get('/users/:username', async (req, res) => {
 
 
 //Logic to UPDATE user data via username 
-app.put("/users/:username", [
+app.patch("/users/:username", [
   check('username', 'Username must be at least 5 characters long.').isLength({ min: 5 }),
   check('username', 'Username contains non alphanumeric characters, which is not allowed.').isAlphanumeric(),
   check('email', 'Email must be in a valid format.').isEmail()
