@@ -131,12 +131,14 @@ app.patch("/users/:username", [
     return res.status(400).send('Permission denied');
   }
 
+  let hashedPassword = Users.hashPassword(req.body.password);
+
   await Users.findOneAndUpdate({ username: req.params.username },
     {
       $set: {
         username: req.body.username,
         name: req.body.name,
-        password: req.body.password,
+        password: hashedPassword,
         email: req.body.email,
         birthdate: req.body.birthdate
       }
