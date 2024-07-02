@@ -151,7 +151,7 @@ app.patch("/users/:username", [
 
 
 //endpoint to add a movie to a users list of favorites (I"m using update/put as opposed to create/post (CRUD)); authentication implemented
-app.put("/users/:username/movies/:movieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.patch("/users/:username/movies/:movieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.username !== req.params.username) {
     return res.status(400).send('Permission denied');
   }
